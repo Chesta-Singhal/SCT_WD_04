@@ -1,0 +1,58 @@
+const taskForm = document.getElementById('taskForm');
+const taskInput = document.getElementById('taskInput');
+const taskDateTime = document.getElementById('taskDateTime');
+const taskList = document.getElementById('taskList');
+
+taskForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  addTask(taskInput.value, taskDateTime.value);
+  taskInput.value = '';
+  taskDateTime.value = '';
+});
+
+function addTask(taskText, dateTime) {
+  const li = document.createElement('li');
+
+  const taskSpan = document.createElement('span');
+  taskSpan.className = 'task-text';
+  taskSpan.textContent = taskText;
+
+  const timeSpan = document.createElement('span');
+  timeSpan.className = 'task-time';
+  timeSpan.textContent = `Due: ${new Date(dateTime).toLocaleString()}`;
+
+  const btns = document.createElement('div');
+  btns.className = 'buttons';
+
+  const doneBtn = document.createElement('button');
+  doneBtn.textContent = '✔️';
+  doneBtn.className = 'done';
+  doneBtn.onclick = () => {
+    taskSpan.classList.toggle('done-task');
+  };
+
+  const editBtn = document.createElement('button');
+  editBtn.textContent = '✏️';
+  editBtn.className = 'edit';
+  editBtn.onclick = () => {
+    const newTask = prompt('Edit your task:', taskSpan.textContent);
+    if (newTask) taskSpan.textContent = newTask;
+  };
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = '🗑️';
+  deleteBtn.className = 'delete';
+  deleteBtn.onclick = () => {
+    li.remove();
+  };
+
+  btns.appendChild(doneBtn);
+  btns.appendChild(editBtn);
+  btns.appendChild(deleteBtn);
+
+  li.appendChild(taskSpan);
+  li.appendChild(timeSpan);
+  li.appendChild(btns);
+
+  taskList.appendChild(li);
+}
